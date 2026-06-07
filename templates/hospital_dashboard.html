@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="dashboard-card p-4 p-lg-5 fade-up">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-4 mb-4">
+        <div>
+            <span class="eyebrow mb-3">Hospital workspace</span>
+            <h1 class="fw-bold mb-2">
+                Hospital Administrator Dashboard
+            </h1>
+            <p class="text-secondary mb-0">
+                This confirms that hospital users authenticate separately and land on a hospital-specific dashboard.
+            </p>
+        </div>
+        <span class="role-icon">H</span>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="metric-card">
+                <p class="text-secondary fw-semibold mb-2">Role</p>
+                <strong class="fs-4">Hospital Admin</strong>
+                <small class="text-secondary">Role-based access active</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-card">
+                <p class="text-secondary fw-semibold mb-2">Module</p>
+                <strong class="fs-4">Inventory</strong>
+                <small class="text-secondary">Prepared for blood stock tracking</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-card">
+                <p class="text-secondary fw-semibold mb-2">Status</p>
+                <strong class="fs-4">Demo Ready</strong>
+                <small class="text-secondary">Dashboard route working</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-banner mt-4" style="background: linear-gradient(135deg, rgba(219, 234, 254, 0.96), rgba(191, 219, 254, 0.78)); color: #1e3a8a;">
+        Hospital blood inventory module coming soon.
+    </div>
+</section>
+
+{% endblock %}

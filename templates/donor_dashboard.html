@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="dashboard-card p-4 p-lg-5 fade-up">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-4 mb-4">
+        <div>
+            <span class="eyebrow mb-3">Donor workspace</span>
+            <h1 class="fw-bold mb-2">
+                Welcome {{ user.username }}
+            </h1>
+            <p class="text-secondary mb-0">
+                Your donor profile is connected to the eligibility checker using the 56-day donation rule.
+            </p>
+        </div>
+        <span class="role-icon">D</span>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="metric-card">
+                <p class="text-secondary fw-semibold mb-2">Blood Type</p>
+                <strong>{{ donor.blood_type }}</strong>
+                <small class="text-secondary">Stored in core_donor</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-card">
+                <p class="text-secondary fw-semibold mb-2">Donation Rule</p>
+                <strong>56</strong>
+                <small class="text-secondary">Days between donations</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-card">
+                <p class="text-secondary fw-semibold mb-2">Next Eligible Date</p>
+                <strong class="fs-4">{{ next_date }}</strong>
+                <small class="text-secondary">Calculated automatically</small>
+            </div>
+        </div>
+    </div>
+
+    {% if donor.is_eligible %}
+
+    <div class="status-banner status-success">
+        <p class="fw-bold text-uppercase mb-1">Eligibility status</p>
+        <h2 class="mb-0">Eligible to donate</h2>
+    </div>
+
+    {% else %}
+
+    <div class="status-banner status-danger">
+        <p class="fw-bold text-uppercase mb-1">Eligibility status</p>
+        <h2 class="mb-2">Not eligible yet</h2>
+        <p class="mb-0">
+            Next eligible date: {{ next_date }}
+        </p>
+    </div>
+
+    {% endif %}
+</section>
+
+{% endblock %}

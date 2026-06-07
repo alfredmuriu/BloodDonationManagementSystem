@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="hero-card glass-card fade-up">
+    <div class="row align-items-center g-5 position-relative">
+        <div class="col-lg-7">
+            <span class="eyebrow mb-4">Safe blood saves lives</span>
+            <h1 class="display-title mb-4">
+                A calmer way to manage blood donation.
+            </h1>
+            <p class="lead text-secondary mb-4">
+                Register donors, authenticate every user type, and route each person to the right dashboard with a clean MySQL-backed workflow.
+            </p>
+
+            <div class="d-grid d-sm-flex gap-3">
+                <a href="{% url 'register' %}" class="btn btn-blood btn-lg px-5">
+                    Register
+                </a>
+                <a href="{% url 'login' %}" class="btn btn-cream btn-lg px-5">
+                    Login
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="feature-card p-4">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <span class="role-icon">+</span>
+                    <div>
+                        <p class="text-secondary mb-1">Demo readiness</p>
+                        <h3 class="h4 fw-bold mb-0">Three deliverables covered</h3>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="stat-pill w-100">Authentication for all user types</div>
+                    </div>
+                    <div class="col-12">
+                        <div class="stat-pill w-100">Donor management module</div>
+                    </div>
+                    <div class="col-12">
+                        <div class="stat-pill w-100">MySQL database connected</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

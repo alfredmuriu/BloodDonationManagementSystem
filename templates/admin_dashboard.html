@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="dashboard-card p-4 p-lg-5 fade-up">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-4 mb-4">
+        <div>
+            <span class="eyebrow mb-3">System workspace</span>
+            <h1 class="fw-bold mb-2">
+                System Administrator Dashboard
+            </h1>
+            <p class="text-secondary mb-0">
+                System administrators authenticate into a separate management area for platform-level control.
+            </p>
+        </div>
+        <span class="role-icon">S</span>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="metric-card">
+                <p class="text-secondary fw-semibold mb-2">Role</p>
+                <strong class="fs-4">System Admin</strong>
+                <small class="text-secondary">Authorization route verified</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-card">
+                <p class="text-secondary fw-semibold mb-2">Users</p>
+                <strong class="fs-4">4 Types</strong>
+                <small class="text-secondary">Donor, hospital, ambulance, admin</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-card">
+                <p class="text-secondary fw-semibold mb-2">Database</p>
+                <strong class="fs-4">MySQL</strong>
+                <small class="text-secondary">Data persisted in project tables</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-banner mt-4" style="background: linear-gradient(135deg, rgba(237, 233, 254, 0.98), rgba(221, 214, 254, 0.74)); color: #4c1d95;">
+        System management module coming soon.
+    </div>
+</section>
+
+{% endblock %}

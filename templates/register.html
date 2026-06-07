@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center fade-up">
+    <div class="col-lg-7">
+        <div class="auth-card mx-auto">
+            <span class="eyebrow mb-3">Create account</span>
+            <h1 class="h2 fw-bold mb-2">Register a blood bank user</h1>
+            <p class="text-secondary mb-4">
+                Choose the right role so the system can send the user to the correct dashboard after login.
+            </p>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <button class="btn btn-blood w-100 mt-2 py-3">
+                    Register
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
