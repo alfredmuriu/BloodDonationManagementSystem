@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card" style="max-width:480px; margin:0 auto;">
+    <h1>New Blood Request</h1>
+    <p class="muted">Critical requests automatically dispatch the nearest ambulance.</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Submit Request</button>
+    </form>
+    <p style="margin-top:14px;"><a href="{% url 'dashboard' %}">Back to dashboard</a></p>
+</div>
+{% endblock %}

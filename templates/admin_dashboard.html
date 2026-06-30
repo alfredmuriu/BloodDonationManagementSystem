@@ -2,47 +2,64 @@
 
 {% block content %}
 
-<section class="dashboard-card p-4 p-lg-5 fade-up">
-    <div class="d-flex flex-column flex-lg-row justify-content-between gap-4 mb-4">
-        <div>
-            <span class="eyebrow mb-3">System workspace</span>
-            <h1 class="fw-bold mb-2">
-                System Administrator Dashboard
-            </h1>
-            <p class="text-secondary mb-0">
-                System administrators authenticate into a separate management area for platform-level control.
-            </p>
-        </div>
-        <span class="role-icon">S</span>
-    </div>
+<div class="card">
+    <h1>System Administrator</h1>
+    <p class="muted">Platform overview and priority request queue.</p>
 
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="metric-card">
-                <p class="text-secondary fw-semibold mb-2">Role</p>
-                <strong class="fs-4">System Admin</strong>
-                <small class="text-secondary">Authorization route verified</small>
-            </div>
+    <div class="metrics">
+        <div class="metric">
+            <div class="label">Donors</div>
+            <div class="value">{{ donor_count }}</div>
         </div>
-        <div class="col-md-4">
-            <div class="metric-card">
-                <p class="text-secondary fw-semibold mb-2">Users</p>
-                <strong class="fs-4">4 Types</strong>
-                <small class="text-secondary">Donor, hospital, ambulance, admin</small>
-            </div>
+        <div class="metric">
+            <div class="label">Hospitals</div>
+            <div class="value">{{ hospital_count }}</div>
         </div>
-        <div class="col-md-4">
-            <div class="metric-card">
-                <p class="text-secondary fw-semibold mb-2">Database</p>
-                <strong class="fs-4">MySQL</strong>
-                <small class="text-secondary">Data persisted in project tables</small>
-            </div>
+        <div class="metric">
+            <div class="label">Blood Units</div>
+            <div class="value">{{ unit_count }}</div>
+        </div>
+        <div class="metric">
+            <div class="label">Ambulances</div>
+            <div class="value">{{ ambulance_count }}</div>
         </div>
     </div>
+</div>
 
-    <div class="status-banner mt-4" style="background: linear-gradient(135deg, rgba(237, 233, 254, 0.98), rgba(221, 214, 254, 0.74)); color: #4c1d95;">
-        System management module coming soon.
-    </div>
-</section>
+<div class="card" style="margin-top:20px;">
+    <h2>Priority Request Queue</h2>
+    {% if requests %}
+    <table style="width:100%; border-collapse:collapse;">
+        <tr style="text-align:left; border-bottom:1px solid #d6d6d6;">
+            <th>Priority</th><th>Hospital</th><th>County</th><th>Blood Type</th><th>Units</th><th>Action</th>
+        </tr>
+        {% for r in requests %}
+        <tr style="border-bottom:1px solid #eee;">
+            <td>
+                {% if r.priority == 'critical' %}
+                    <span style="color:#9b1c2e; font-weight:700;">Critical</span>
+                {% elif r.priority == 'urgent' %}
+                    <span style="color:#b8860b; font-weight:700;">Urgent</span>
+                {% else %}
+                    Normal
+                {% endif %}
+            </td>
+            <td>{{ r.hospital.name }}</td>
+            <td>{{ r.hospital.county }}</td>
+            <td>{{ r.blood_type }}</td>
+            <td>{{ r.units_needed }}</td>
+            <td>
+                <form method="post" action="{% url 'fulfill_request' r.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Mark Fulfilled</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p class="muted">No pending requests.</p>
+    {% endif %}
+</div>
 
 {% endblock %}

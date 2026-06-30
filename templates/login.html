@@ -2,34 +2,25 @@
 
 {% block content %}
 
-<div class="row justify-content-center fade-up">
-    <div class="col-lg-6">
-        <div class="auth-card mx-auto">
-            <span class="eyebrow mb-3">Welcome back</span>
-            <h1 class="h2 fw-bold mb-2">Log in to your dashboard</h1>
-            <p class="text-secondary mb-4">
-                Donors, hospital administrators, ambulance operators, and system administrators all land in their own workspace.
-            </p>
+<div class="card" style="max-width:420px; margin:0 auto;">
+    <h1>Log in</h1>
+    <p class="muted">Sign in to reach your dashboard.</p>
 
-            <form method="POST">
-                {% csrf_token %}
+    <form method="POST">
+        {% csrf_token %}
 
-                <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" placeholder="Enter username" required>
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="Enter password" required>
-                </div>
-
-                <button class="btn btn-blood w-100 py-3">
-                    Login
-                </button>
-            </form>
+        <div class="field">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter username" required>
         </div>
-    </div>
+
+        <div class="field">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+        </div>
+
+        <button class="btn btn-primary btn-block">Login</button>
+    </form>
 </div>
 
 {% endblock %}

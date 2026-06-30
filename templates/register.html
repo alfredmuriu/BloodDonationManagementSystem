@@ -2,26 +2,41 @@
 
 {% block content %}
 
-<div class="row justify-content-center fade-up">
-    <div class="col-lg-7">
-        <div class="auth-card mx-auto">
-            <span class="eyebrow mb-3">Create account</span>
-            <h1 class="h2 fw-bold mb-2">Register a blood bank user</h1>
-            <p class="text-secondary mb-4">
-                Choose the right role so the system can send the user to the correct dashboard after login.
-            </p>
+<div class="card" style="max-width:480px; margin:0 auto;">
+    <h1>Create an account</h1>
+    <p class="muted">Choose your role to be sent to the right dashboard after login.</p>
 
-            <form method="POST">
-                {% csrf_token %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
 
-                {{ form.as_p }}
+        <p>{{ form.username.label_tag }} {{ form.username }} {{ form.username.errors }}</p>
+        <p>{{ form.email.label_tag }} {{ form.email }} {{ form.email.errors }}</p>
+        <p>{{ form.role.label_tag }} {{ form.role }} {{ form.role.errors }}</p>
 
-                <button class="btn btn-blood w-100 mt-2 py-3">
-                    Register
-                </button>
-            </form>
-        </div>
-    </div>
+        <p id="blood-type-field">{{ form.blood_type.label_tag }} {{ form.blood_type }} {{ form.blood_type.errors }}</p>
+
+        <p>{{ form.password1.label_tag }} {{ form.password1 }} {{ form.password1.errors }}</p>
+        <p>{{ form.password2.label_tag }} {{ form.password2 }} {{ form.password2.errors }}</p>
+
+        <button class="btn btn-primary btn-block">Register</button>
+    </form>
 </div>
+
+<script>
+    var roleSelect = document.getElementById("id_role");
+    var bloodField = document.getElementById("blood-type-field");
+
+    function toggleBloodType() {
+        if (roleSelect.value === "donor") {
+            bloodField.style.display = "block";
+        } else {
+            bloodField.style.display = "none";
+        }
+    }
+
+    roleSelect.addEventListener("change", toggleBloodType);
+    toggleBloodType();
+</script>
 
 {% endblock %}

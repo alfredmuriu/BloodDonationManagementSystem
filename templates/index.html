@@ -2,51 +2,47 @@
 
 {% block content %}
 
-<section class="hero-card glass-card fade-up">
-    <div class="row align-items-center g-5 position-relative">
-        <div class="col-lg-7">
-            <span class="eyebrow mb-4">Safe blood saves lives</span>
-            <h1 class="display-title mb-4">
-                A calmer way to manage blood donation.
-            </h1>
-            <p class="lead text-secondary mb-4">
-                Register donors, authenticate every user type, and route each person to the right dashboard with a clean MySQL-backed workflow.
-            </p>
+<style>
+    .hero {
+        background: var(--red);
+        color: #fff;
+        padding: 46px 36px;
+        border: 1px solid #6f1320;
+    }
+    .hero h1 { font-size: 26px; margin: 0 0 12px; color: #fff; }
+    .hero p { color: #f0dada; max-width: 560px; margin: 0 0 22px; font-size: 15px; }
+    .hero .btn { margin-right: 8px; }
+    .hero .btn-ghost {
+        background: transparent;
+        border: 1px solid #fff;
+        color: #fff;
+    }
+    .hero .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+</style>
 
-            <div class="d-grid d-sm-flex gap-3">
-                <a href="{% url 'register' %}" class="btn btn-blood btn-lg px-5">
-                    Register
-                </a>
-                <a href="{% url 'login' %}" class="btn btn-cream btn-lg px-5">
-                    Login
-                </a>
-            </div>
-        </div>
+<div class="hero">
+    <h1>Manage blood donations and donors in one place</h1>
+    <p>
+        Register donors, sign in by role, and track donation eligibility &mdash;
+        all from a single system.
+    </p>
+    <a href="{% url 'register' %}" class="btn btn-primary" style="background:#fff;color:var(--red);border-color:#fff;">Get Started</a>
+    <a href="{% url 'login' %}" class="btn btn-ghost">Login</a>
+</div>
 
-        <div class="col-lg-5">
-            <div class="feature-card p-4">
-                <div class="d-flex align-items-center gap-3 mb-4">
-                    <span class="role-icon">+</span>
-                    <div>
-                        <p class="text-secondary mb-1">Demo readiness</p>
-                        <h3 class="h4 fw-bold mb-0">Three deliverables covered</h3>
-                    </div>
-                </div>
-
-                <div class="row g-3">
-                    <div class="col-12">
-                        <div class="stat-pill w-100">Authentication for all user types</div>
-                    </div>
-                    <div class="col-12">
-                        <div class="stat-pill w-100">Donor management module</div>
-                    </div>
-                    <div class="col-12">
-                        <div class="stat-pill w-100">MySQL database connected</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="metrics">
+    <div class="metric">
+        <div class="value">Multi-role access</div>
+        <div class="label">Donors, hospitals, ambulance operators and admins each get their own dashboard.</div>
     </div>
-</section>
+    <div class="metric">
+        <div class="value">Donor management</div>
+        <div class="label">Track blood type, donation history and eligibility.</div>
+    </div>
+    <div class="metric">
+        <div class="value">Eligibility checks</div>
+        <div class="label">Automatic next-donation date using the 56-day rule.</div>
+    </div>
+</div>
 
 {% endblock %}

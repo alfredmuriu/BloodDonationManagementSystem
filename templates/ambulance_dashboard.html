@@ -2,47 +2,56 @@
 
 {% block content %}
 
-<section class="dashboard-card p-4 p-lg-5 fade-up">
-    <div class="d-flex flex-column flex-lg-row justify-content-between gap-4 mb-4">
-        <div>
-            <span class="eyebrow mb-3">Ambulance workspace</span>
-            <h1 class="fw-bold mb-2">
-                Ambulance Operator Dashboard
-            </h1>
-            <p class="text-secondary mb-0">
-                Ambulance users are authenticated and separated from donor, hospital, and system admin access.
-            </p>
+<div class="card">
+    <h1>Ambulance Operator</h1>
+    {% if ambulance %}
+        <p class="muted">{{ ambulance.plate_number }} — {{ ambulance.county }}</p>
+        <div class="metrics">
+            <div class="metric">
+                <div class="label">Status</div>
+                <div class="value">{% if ambulance.is_available %}Available{% else %}On Dispatch{% endif %}</div>
+            </div>
+            <div class="metric">
+                <div class="label">County</div>
+                <div class="value">{{ ambulance.county }}</div>
+            </div>
         </div>
-        <span class="role-icon">A</span>
-    </div>
+    {% else %}
+        <div class="banner banner-bad">No ambulance is linked to your account.</div>
+    {% endif %}
+</div>
 
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="metric-card">
-                <p class="text-secondary fw-semibold mb-2">Role</p>
-                <strong class="fs-4">Operator</strong>
-                <small class="text-secondary">Ambulance login verified</small>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="metric-card">
-                <p class="text-secondary fw-semibold mb-2">Module</p>
-                <strong class="fs-4">Dispatch</strong>
-                <small class="text-secondary">Prepared for emergency routing</small>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="metric-card">
-                <p class="text-secondary fw-semibold mb-2">Status</p>
-                <strong class="fs-4">Demo Ready</strong>
-                <small class="text-secondary">Dashboard route working</small>
-            </div>
-        </div>
-    </div>
-
-    <div class="status-banner mt-4" style="background: linear-gradient(135deg, rgba(254, 243, 199, 0.98), rgba(253, 230, 138, 0.74)); color: #78350f;">
-        Ambulance dispatch module coming soon.
-    </div>
-</section>
+{% if ambulance %}
+<div class="card" style="margin-top:20px;">
+    <h2>My Dispatches</h2>
+    {% if dispatches %}
+    <table style="width:100%; border-collapse:collapse;">
+        <tr style="text-align:left; border-bottom:1px solid #d6d6d6;">
+            <th>Hospital</th><th>Blood Type</th><th>Units</th><th>Status</th><th>Action</th>
+        </tr>
+        {% for d in dispatches %}
+        <tr style="border-bottom:1px solid #eee;">
+            <td>{{ d.request.hospital.name }}</td>
+            <td>{{ d.request.blood_type }}</td>
+            <td>{{ d.request.units_needed }}</td>
+            <td>{{ d.get_status_display }}</td>
+            <td>
+                {% if d.status == 'dispatched' %}
+                <form method="post" action="{% url 'complete_dispatch' d.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Mark Delivered</button>
+                </form>
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p class="muted">No dispatches yet.</p>
+    {% endif %}
+</div>
+{% endif %}
 
 {% endblock %}

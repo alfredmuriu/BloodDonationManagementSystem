@@ -2,62 +2,58 @@
 
 {% block content %}
 
-<section class="dashboard-card p-4 p-lg-5 fade-up">
-    <div class="d-flex flex-column flex-lg-row justify-content-between gap-4 mb-4">
+<div class="card">
+    <div class="row-between">
         <div>
-            <span class="eyebrow mb-3">Donor workspace</span>
-            <h1 class="fw-bold mb-2">
-                Welcome {{ user.username }}
-            </h1>
-            <p class="text-secondary mb-0">
-                Your donor profile is connected to the eligibility checker using the 56-day donation rule.
-            </p>
+            <h1>Welcome, {{ user.username }}</h1>
+            <p class="muted">Your donor profile and eligibility at a glance.</p>
         </div>
-        <span class="role-icon">D</span>
+        <div>
+            <a href="{% url 'donor_profile' %}" class="btn">Edit Profile</a>
+            <a href="{% url 'book_appointment' %}" class="btn btn-primary">Book Appointment</a>
+        </div>
     </div>
 
-    <div class="row g-4 mb-4">
-        <div class="col-md-4">
-            <div class="metric-card">
-                <p class="text-secondary fw-semibold mb-2">Blood Type</p>
-                <strong>{{ donor.blood_type }}</strong>
-                <small class="text-secondary">Stored in core_donor</small>
-            </div>
+    <div class="metrics">
+        <div class="metric">
+            <div class="label">Blood Type</div>
+            <div class="value">{{ donor.blood_type|default:"—" }}</div>
         </div>
-        <div class="col-md-4">
-            <div class="metric-card">
-                <p class="text-secondary fw-semibold mb-2">Donation Rule</p>
-                <strong>56</strong>
-                <small class="text-secondary">Days between donations</small>
-            </div>
+        <div class="metric">
+            <div class="label">County</div>
+            <div class="value">{{ donor.county|default:"—" }}</div>
         </div>
-        <div class="col-md-4">
-            <div class="metric-card">
-                <p class="text-secondary fw-semibold mb-2">Next Eligible Date</p>
-                <strong class="fs-4">{{ next_date }}</strong>
-                <small class="text-secondary">Calculated automatically</small>
-            </div>
+        <div class="metric">
+            <div class="label">Next Eligible Date</div>
+            <div class="value">{{ next_date }}</div>
         </div>
     </div>
 
     {% if donor.is_eligible %}
-
-    <div class="status-banner status-success">
-        <p class="fw-bold text-uppercase mb-1">Eligibility status</p>
-        <h2 class="mb-0">Eligible to donate</h2>
-    </div>
-
+        <div class="banner banner-ok">You are eligible to donate.</div>
     {% else %}
-
-    <div class="status-banner status-danger">
-        <p class="fw-bold text-uppercase mb-1">Eligibility status</p>
-        <h2 class="mb-2">Not eligible yet</h2>
-        <p class="mb-0">
-            Next eligible date: {{ next_date }}
-        </p>
-    </div>
-
+        <div class="banner banner-bad">Not eligible yet — next eligible date: {{ next_date }}.</div>
     {% endif %}
-</section>
+</div>
+
+<div class="card" style="margin-top:20px;">
+    <h2>My Appointments &amp; Donation History</h2>
+    {% if appointments %}
+        <table style="width:100%; border-collapse:collapse;">
+            <tr style="text-align:left; border-bottom:1px solid #d6d6d6;">
+                <th>Hospital</th><th>Date</th><th>Status</th>
+            </tr>
+            {% for a in appointments %}
+            <tr style="border-bottom:1px solid #eee;">
+                <td>{{ a.hospital.name }}</td>
+                <td>{{ a.date }}</td>
+                <td>{{ a.get_status_display }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p class="muted">No appointments yet.</p>
+    {% endif %}
+</div>
 
 {% endblock %}
