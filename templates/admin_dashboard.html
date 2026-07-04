@@ -1,65 +1,69 @@
-{% extends 'base.html' %}
+{% extends 'admin_base.html' %}
 
-{% block content %}
+{% block admin_content %}
+<style>
+    .stat-strip {
+        display: grid; grid-template-columns: repeat(6, 1fr);
+        border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+        margin-bottom: 30px;
+    }
+    .stat-strip .cell { padding: 16px 18px; border-right: 1px solid var(--line); }
+    .stat-strip .cell:last-child { border-right: 0; }
+    .stat-strip .k { font-size: 12px; color: var(--muted); }
+    .stat-strip .v { font-size: 24px; font-weight: 700; margin-top: 2px; }
 
-<div class="card">
-    <h1>System Administrator</h1>
-    <p class="muted">Platform overview and priority request queue.</p>
+    .qsec-title { font-size: 16px; margin: 0 0 12px; }
+    .prio { font-weight: 600; }
+    .prio.critical { color: var(--red); }
+    .prio.urgent { color: #b8860b; }
+    .prio.normal { color: var(--muted); font-weight: 400; }
 
-    <div class="metrics">
-        <div class="metric">
-            <div class="label">Donors</div>
-            <div class="value">{{ donor_count }}</div>
-        </div>
-        <div class="metric">
-            <div class="label">Hospitals</div>
-            <div class="value">{{ hospital_count }}</div>
-        </div>
-        <div class="metric">
-            <div class="label">Blood Units</div>
-            <div class="value">{{ unit_count }}</div>
-        </div>
-        <div class="metric">
-            <div class="label">Ambulances</div>
-            <div class="value">{{ ambulance_count }}</div>
-        </div>
+    @media (max-width: 820px) { .stat-strip { grid-template-columns: repeat(3, 1fr); } }
+</style>
+
+<div class="admin-head">
+    <div>
+        <h1>Overview</h1>
+        <p class="sub">Signed in as {{ user.username }} — system administrator.</p>
     </div>
 </div>
 
-<div class="card" style="margin-top:20px;">
-    <h2>Priority Request Queue</h2>
-    {% if requests %}
-    <table style="width:100%; border-collapse:collapse;">
-        <tr style="text-align:left; border-bottom:1px solid #d6d6d6;">
-            <th>Priority</th><th>Hospital</th><th>County</th><th>Blood Type</th><th>Units</th><th>Action</th>
-        </tr>
-        {% for r in requests %}
-        <tr style="border-bottom:1px solid #eee;">
-            <td>
-                {% if r.priority == 'critical' %}
-                    <span style="color:#9b1c2e; font-weight:700;">Critical</span>
-                {% elif r.priority == 'urgent' %}
-                    <span style="color:#b8860b; font-weight:700;">Urgent</span>
-                {% else %}
-                    Normal
-                {% endif %}
-            </td>
-            <td>{{ r.hospital.name }}</td>
-            <td>{{ r.hospital.county }}</td>
-            <td>{{ r.blood_type }}</td>
-            <td>{{ r.units_needed }}</td>
-            <td>
-                <form method="post" action="{% url 'fulfill_request' r.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn">Mark Fulfilled</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-        <p class="muted">No pending requests.</p>
-    {% endif %}
+<div class="stat-strip">
+    <div class="cell"><div class="k">Users</div><div class="v">{{ user_count }}</div></div>
+    <div class="cell"><div class="k">Donors</div><div class="v">{{ donor_count }}</div></div>
+    <div class="cell"><div class="k">Hospitals</div><div class="v">{{ hospital_count }}</div></div>
+    <div class="cell"><div class="k">Units</div><div class="v">{{ unit_count }}</div></div>
+    <div class="cell"><div class="k">Requests</div><div class="v">{{ request_count }}</div></div>
+    <div class="cell"><div class="k">Ambulances</div><div class="v">{{ ambulance_count }}</div></div>
 </div>
 
+<h2 class="qsec-title">Priority request queue</h2>
+<div class="table-wrap">
+    {% if requests %}
+    <table class="data">
+        <thead>
+            <tr><th>Priority</th><th>Hospital</th><th>County</th><th>Blood Type</th><th>Units</th><th style="text-align:right;">Action</th></tr>
+        </thead>
+        <tbody>
+            {% for r in requests %}
+            <tr>
+                <td><span class="prio {{ r.priority }}">{{ r.get_priority_display }}</span></td>
+                <td>{{ r.hospital.name }}</td>
+                <td>{{ r.hospital.county }}</td>
+                <td>{{ r.blood_type }}</td>
+                <td>{{ r.units_needed }}</td>
+                <td>
+                    <form method="post" action="{% url 'fulfill_request' r.id %}" style="text-align:right;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm">Mark Fulfilled</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty">No pending requests right now.</div>
+    {% endif %}
+</div>
 {% endblock %}

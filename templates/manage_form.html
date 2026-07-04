@@ -1,0 +1,25 @@
+{% extends 'admin_base.html' %}
+
+{% block admin_content %}
+<div class="admin-head">
+    <div>
+        <p class="crumb">
+            <a href="{% url 'dashboard' %}">Control Panel</a> &rsaquo;
+            <a href="{% url 'manage_list' slug %}">{{ label }}</a> &rsaquo;
+            {% if is_add %}New{% else %}Edit{% endif %}
+        </p>
+        <h1>{% if is_add %}New {{ singular }}{% else %}Edit {{ singular }}{% endif %}</h1>
+    </div>
+</div>
+
+<div class="panel">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div style="display:flex; gap:10px; margin-top:8px;">
+            <button type="submit" class="btn btn-primary">{% if is_add %}Create{% else %}Save changes{% endif %}</button>
+            <a href="{% url 'manage_list' slug %}" class="btn">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

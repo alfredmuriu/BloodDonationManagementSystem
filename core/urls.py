@@ -14,4 +14,10 @@ urlpatterns = [
     path("hospital/request/", views.create_request, name="create_request"),
     path("request/<int:request_id>/fulfill/", views.fulfill_request, name="fulfill_request"),
     path("dispatch/<int:dispatch_id>/complete/", views.complete_dispatch, name="complete_dispatch"),
+
+    # Admin control panel (system admin only)
+    path("manage/<slug:model>/", views.manage_list, name="manage_list"),
+    path("manage/<slug:model>/add/", views.manage_form, name="manage_add"),
+    path("manage/<slug:model>/<int:pk>/edit/", views.manage_form, name="manage_edit"),
+    path("manage/<slug:model>/<int:pk>/delete/", views.manage_delete, name="manage_delete"),
 ]

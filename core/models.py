@@ -49,24 +49,66 @@ class Hospital(models.Model):
         return self.name
 
 
+# Blood-donation eligibility requirements
+DONATION_INTERVAL_DAYS = 56   # minimum gap between donations (whole blood)
+MIN_AGE = 18
+MAX_AGE = 65
+MIN_WEIGHT_KG = 50
+
+
 class Donor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="donor")
     blood_type = models.CharField(max_length=3, choices=BLOOD_TYPES, default="O+")
     date_of_birth = models.DateField(blank=True, null=True)
     county = models.CharField(max_length=50, choices=COUNTIES, blank=True)
+    weight_kg = models.PositiveIntegerField(blank=True, null=True)
     last_donation_date = models.DateField(blank=True, null=True)
 
     @property
+    def age(self):
+        if not self.date_of_birth:
+            return None
+        today = timezone.localdate()
+        dob = self.date_of_birth
+        return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+    @property
+    def eligibility_issues(self):
+        """List of reasons the donor cannot donate. Empty list = eligible."""
+        issues = []
+
+        # 1. 56-day interval since last donation
+        if self.last_donation_date and timezone.localdate() < self.next_eligible_date:
+            issues.append(
+                f"Must wait until {self.next_eligible_date} "
+                f"({DONATION_INTERVAL_DAYS}-day rule since last donation)."
+            )
+
+        # 2. Age between 18 and 65
+        if self.age is None:
+            issues.append("Date of birth is required to confirm age eligibility.")
+        elif self.age < MIN_AGE:
+            issues.append(f"Must be at least {MIN_AGE} years old (currently {self.age}).")
+        elif self.age > MAX_AGE:
+            issues.append(f"Must be {MAX_AGE} or younger (currently {self.age}).")
+
+        # 3. Minimum body weight
+        if self.weight_kg is None:
+            issues.append("Body weight is required to confirm eligibility.")
+        elif self.weight_kg < MIN_WEIGHT_KG:
+            issues.append(f"Must weigh at least {MIN_WEIGHT_KG} kg (currently {self.weight_kg} kg).")
+
+        return issues
+
+    @property
     def is_eligible(self):
-        if not self.last_donation_date:
-            return True
-        return timezone.localdate() >= self.next_eligible_date
+        return not self.eligibility_issues
 
     @property
     def next_eligible_date(self):
         if not self.last_donation_date:
             return timezone.localdate()
-        return self.last_donation_date + timedelta(days=56)
+        return self.last_donation_date + timedelta(days=DONATION_INTERVAL_DAYS)
 
     def __str__(self):
         return f"{self.user.username} ({self.blood_type})"

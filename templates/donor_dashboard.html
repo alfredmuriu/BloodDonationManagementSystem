@@ -30,9 +30,16 @@
     </div>
 
     {% if donor.is_eligible %}
-        <div class="banner banner-ok">You are eligible to donate.</div>
+        <div class="banner banner-ok">You meet all requirements and are eligible to donate.</div>
     {% else %}
-        <div class="banner banner-bad">Not eligible yet — next eligible date: {{ next_date }}.</div>
+        <div class="banner banner-bad">
+            <strong>Not eligible to donate yet.</strong>
+            <ul style="margin:8px 0 0; padding-left:18px;">
+                {% for issue in donor.eligibility_issues %}
+                    <li>{{ issue }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
 </div>
 

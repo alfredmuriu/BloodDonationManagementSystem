@@ -30,12 +30,19 @@ class Command(BaseCommand):
             user, created = User.objects.get_or_create(
                 username=username, defaults={"role": role}
             )
-            if created:
-                user.set_password(DEMO_PASSWORD)
-                user.role = role
-                user.email = f"{username}@example.com"
-                user.save()
-                self.stdout.write(self.style.SUCCESS(f"Created {username} ({role})"))
+            # Always (re)set password, role and email so every demo login is
+            # guaranteed to work, even for pre-existing accounts.
+            user.set_password(DEMO_PASSWORD)
+            user.role = role
+            user.email = f"{username}@example.com"
+            # System admin doubles as a Django superuser so it can use the
+            # built-in /admin/ site for full CRUD on every model.
+            if role == User.Role.SYSTEM_ADMIN:
+                user.is_staff = True
+                user.is_superuser = True
+            user.save()
+            action = "Created" if created else "Updated"
+            self.stdout.write(self.style.SUCCESS(f"{action} {username} ({role})"))
             users[username] = user
 
         # Donor profile for ethan: donated 10 days ago -> currently INELIGIBLE.
@@ -44,6 +51,7 @@ class Command(BaseCommand):
         donor.blood_type = "O+"
         donor.county = "Nairobi"
         donor.date_of_birth = date(1998, 5, 20)
+        donor.weight_kg = 72
         donor.last_donation_date = date.today() - timedelta(days=10)
         donor.save()
 

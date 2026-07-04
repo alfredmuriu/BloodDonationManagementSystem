@@ -1,0 +1,42 @@
+{% extends 'admin_base.html' %}
+
+{% block admin_content %}
+<div class="admin-head">
+    <div>
+        <p class="crumb"><a href="{% url 'dashboard' %}">Control Panel</a> &rsaquo; {{ label }}</p>
+        <h1>{{ label }}</h1>
+        <p class="sub">{{ count }} record{{ count|pluralize }} &middot; full create, edit and delete access.</p>
+    </div>
+    <a href="{% url 'manage_add' slug %}" class="btn btn-primary">+ New {{ singular }}</a>
+</div>
+
+<div class="table-wrap">
+    {% if rows %}
+    <table class="data">
+        <thead>
+            <tr>
+                {% for h in headers %}<th>{{ h }}</th>{% endfor %}
+                <th style="text-align:right;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                {% for cell in row.cells %}<td>{{ cell }}</td>{% endfor %}
+                <td>
+                    <div class="row-actions">
+                        <a href="{% url 'manage_edit' slug row.pk %}" class="btn btn-sm">Edit</a>
+                        <a href="{% url 'manage_delete' slug row.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty">
+        No {{ label|lower }} yet. Click &ldquo;New {{ singular }}&rdquo; to add one.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

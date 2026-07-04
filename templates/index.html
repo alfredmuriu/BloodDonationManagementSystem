@@ -3,45 +3,171 @@
 {% block content %}
 
 <style>
+    /* ---- Hero ---- */
     .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        gap: 56px;
+        align-items: center;
+        padding: 32px 0 64px;
+    }
+    .hero h1 {
+        font-size: 46px;
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+        margin: 0 0 20px;
+        color: var(--ink);
+    }
+    .hero p.lead {
+        color: var(--muted);
+        font-size: 17px;
+        max-width: 460px;
+        margin: 0 0 30px;
+    }
+    .hero .btn { margin-right: 10px; }
+    .hero .btn-lg { padding: 13px 24px; font-size: 15px; }
+
+    /* ---- Mock dashboard preview ---- */
+    .preview {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 24px 50px -28px rgba(20, 22, 30, 0.28);
+        background: #fff;
+    }
+    .preview-bar {
+        display: flex;
+        gap: 7px;
+        padding: 13px 16px;
+        border-bottom: 1px solid var(--line);
+        background: #fbfbfc;
+    }
+    .preview-bar span {
+        width: 11px; height: 11px; border-radius: 50%;
+        background: #e0e2e6;
+    }
+    .preview-body { display: grid; grid-template-columns: 150px 1fr; }
+    .preview-side {
         background: var(--red);
-        color: #fff;
-        padding: 46px 36px;
-        border: 1px solid #6f1320;
+        padding: 18px 14px;
+        display: flex; flex-direction: column; gap: 4px;
     }
-    .hero h1 { font-size: 26px; margin: 0 0 12px; color: #fff; }
-    .hero p { color: #f0dada; max-width: 560px; margin: 0 0 22px; font-size: 15px; }
-    .hero .btn { margin-right: 8px; }
-    .hero .btn-ghost {
-        background: transparent;
-        border: 1px solid #fff;
-        color: #fff;
+    .preview-side a {
+        color: #f2cfd4; text-decoration: none; font-size: 13px;
+        padding: 8px 10px; border-radius: 7px; font-weight: 500;
     }
-    .hero .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+    .preview-side a.active { background: rgba(255,255,255,0.16); color: #fff; }
+    .preview-main { padding: 18px; }
+    .stat-row {
+        display: grid; grid-template-columns: repeat(3, 1fr);
+        border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+        margin-bottom: 16px;
+    }
+    .stat {
+        padding: 12px 14px;
+        border-right: 1px solid var(--line);
+    }
+    .stat:last-child { border-right: 0; }
+    .stat .k { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .stat .v { font-size: 22px; font-weight: 700; margin-top: 2px; }
+    .drow {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 11px 2px; border-bottom: 1px solid var(--line); font-size: 13px;
+    }
+    .drow:last-child { border-bottom: 0; }
+    .drow .name { font-weight: 600; }
+    .pill { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; }
+    .pill.ok { background: #eaf5ec; color: #2c7a3f; }
+    .pill.wait { background: #fdf3e5; color: #a5691b; }
+    .pill.done { background: #eef1f6; color: #566072; }
+
+    /* ---- Feature section ---- */
+    .eyebrow {
+        color: var(--red); font-weight: 700; font-size: 12.5px;
+        letter-spacing: 0.09em; text-transform: uppercase; margin: 0 0 12px;
+    }
+    .section-head h2 {
+        font-size: 30px; letter-spacing: -0.02em; margin: 0 0 40px; max-width: 620px;
+        line-height: 1.15;
+    }
+    .features {
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+        padding-bottom: 20px;
+    }
+    .feature {
+        border: 1px solid var(--line); border-radius: 12px; padding: 24px;
+    }
+    .feature .ico {
+        width: 40px; height: 40px; border-radius: 10px;
+        background: #fbeef0; color: var(--red);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; margin-bottom: 16px;
+    }
+    .feature h3 { font-size: 16px; margin: 0 0 6px; }
+    .feature p { color: var(--muted); font-size: 14px; margin: 0; }
+
+    @media (max-width: 860px) {
+        .hero { grid-template-columns: 1fr; gap: 36px; padding-bottom: 40px; }
+        .hero h1 { font-size: 34px; }
+        .features { grid-template-columns: 1fr; }
+    }
 </style>
 
-<div class="hero">
-    <h1>Manage blood donations and donors in one place</h1>
-    <p>
-        Register donors, sign in by role, and track donation eligibility &mdash;
-        all from a single system.
-    </p>
-    <a href="{% url 'register' %}" class="btn btn-primary" style="background:#fff;color:var(--red);border-color:#fff;">Get Started</a>
-    <a href="{% url 'login' %}" class="btn btn-ghost">Login</a>
-</div>
+<section class="hero">
+    <div>
+        <h1>Manage blood donations and&nbsp;donors with confidence.</h1>
+        <p class="lead">
+            A single platform for donors, hospitals and ambulance teams &mdash;
+            register, sign in by role, and track donation eligibility in real time.
+        </p>
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg">Get started</a>
+        <a href="{% url 'login' %}" class="btn btn-lg">Sign in</a>
+    </div>
 
-<div class="metrics">
-    <div class="metric">
-        <div class="value">Multi-role access</div>
-        <div class="label">Donors, hospitals, ambulance operators and admins each get their own dashboard.</div>
+    <div class="preview" aria-hidden="true">
+        <div class="preview-bar"><span></span><span></span><span></span></div>
+        <div class="preview-body">
+            <div class="preview-side">
+                <a class="active">Dashboard</a>
+                <a>Donors</a>
+                <a>Requests</a>
+                <a>Inventory</a>
+                <a>Alerts</a>
+            </div>
+            <div class="preview-main">
+                <div class="stat-row">
+                    <div class="stat"><div class="k">Donors</div><div class="v">128</div></div>
+                    <div class="stat"><div class="k">Requests</div><div class="v">9</div></div>
+                    <div class="stat"><div class="k">Units</div><div class="v">42</div></div>
+                </div>
+                <div class="drow"><span class="name">Amina Wanjiru &middot; O+</span><span class="pill ok">Eligible</span></div>
+                <div class="drow"><span class="name">Brian Otieno &middot; A&minus;</span><span class="pill wait">Pending</span></div>
+                <div class="drow"><span class="name">Grace Achieng &middot; B+</span><span class="pill done">Donated</span></div>
+            </div>
+        </div>
     </div>
-    <div class="metric">
-        <div class="value">Donor management</div>
-        <div class="label">Track blood type, donation history and eligibility.</div>
+</section>
+
+<section class="section-head">
+    <p class="eyebrow">Why teams choose us</p>
+    <h2>Built for trust, from the first donor profile to the final unit.</h2>
+</section>
+
+<div class="features">
+    <div class="feature">
+        <div class="ico">&#9679;</div>
+        <h3>Multi-role access</h3>
+        <p>Donors, hospitals, ambulance operators and admins each get a dashboard built for their job.</p>
     </div>
-    <div class="metric">
-        <div class="value">Eligibility checks</div>
-        <div class="label">Automatic next-donation date using the 56-day rule.</div>
+    <div class="feature">
+        <div class="ico">&#9673;</div>
+        <h3>Donor management</h3>
+        <p>Track blood type, donation history and contact details in one organised place.</p>
+    </div>
+    <div class="feature">
+        <div class="ico">&#10003;</div>
+        <h3>Eligibility checks</h3>
+        <p>Automatic checks for age, weight and the 56-day rule, so no one is asked too soon.</p>
     </div>
 </div>
 

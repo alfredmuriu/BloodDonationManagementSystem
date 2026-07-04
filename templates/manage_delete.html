@@ -1,0 +1,25 @@
+{% extends 'admin_base.html' %}
+
+{% block admin_content %}
+<div class="admin-head">
+    <div>
+        <p class="crumb">
+            <a href="{% url 'dashboard' %}">Control Panel</a> &rsaquo;
+            <a href="{% url 'manage_list' slug %}">{{ label }}</a> &rsaquo; Delete
+        </p>
+        <h1>Delete {{ singular }}</h1>
+    </div>
+</div>
+
+<div class="panel">
+    <p>Are you sure you want to permanently delete this {{ singular|lower }}?</p>
+    <p style="font-weight:600; background:#fbeef0; border:1px solid #eccdd2; border-radius:8px; padding:12px 14px;">
+        {{ object_label }}
+    </p>
+    <form method="post" style="display:flex; gap:10px; margin-top:16px;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary" style="background:var(--red); border-color:var(--red);">Yes, delete</button>
+        <a href="{% url 'manage_list' slug %}" class="btn">Cancel</a>
+    </form>
+</div>
+{% endblock %}

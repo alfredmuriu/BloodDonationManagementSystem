@@ -1,42 +1,51 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blood Donation Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --red: #9b1c2e;
-            --ink: #232323;
-            --muted: #767676;
-            --line: #d6d6d6;
-            --bg: #f2f2f0;
+            --red-dark: #7c1523;
+            --ink: #1c1d1f;
+            --muted: #6b6f76;
+            --line: #e6e7ea;
+            --bg: #ffffff;
             --card: #ffffff;
         }
 
         * { box-sizing: border-box; }
 
         body {
-            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+            font-family: 'Poppins', -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             color: var(--ink);
             background: var(--bg);
             margin: 0;
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 15px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
         a { color: var(--red); }
 
         /* Top bar */
         header.topbar {
-            background: var(--red);
-            border-bottom: 3px solid #6f1320;
+            background: #fff;
+            border-bottom: 1px solid var(--line);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .topbar-inner {
-            max-width: 940px;
+            max-width: 1120px;
             margin: 0 auto;
-            padding: 12px 22px;
+            padding: 16px 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -44,37 +53,54 @@
 
         .brand {
             font-weight: 700;
-            font-size: 16px;
-            color: #fff;
+            font-size: 17px;
+            letter-spacing: -0.01em;
+            color: var(--ink);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .brand .drop {
-            width: 16px;
-            height: 16px;
-            background: #fff;
-            border-radius: 50% 50% 50% 0;
-            transform: rotate(45deg);
-            display: inline-block;
+        .brand img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        .topbar nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .topbar nav a {
             text-decoration: none;
-            color: #fff;
-            font-size: 13px;
-            margin-left: 18px;
+            color: #44474d;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 8px;
         }
 
-        .topbar nav a:hover { text-decoration: underline; }
+        .topbar nav a:hover { color: var(--ink); background: #f4f5f6; }
+
+        .topbar nav a.nav-cta {
+            background: var(--red);
+            color: #fff;
+            margin-left: 6px;
+        }
+        .topbar nav a.nav-cta:hover { background: var(--red-dark); }
+
+        .topbar nav a.nav-ghost {
+            border: 1px solid var(--line);
+        }
 
         /* Layout */
         main {
-            max-width: 940px;
-            margin: 26px auto;
-            padding: 0 22px;
+            max-width: 1120px;
+            margin: 40px auto;
+            padding: 0 28px;
         }
 
         h1 { font-size: 22px; margin: 0 0 6px; }
@@ -86,6 +112,7 @@
         .card {
             background: var(--card);
             border: 1px solid var(--line);
+            border-radius: 12px;
             padding: 24px;
         }
 
@@ -93,23 +120,25 @@
         .btn {
             display: inline-block;
             font: inherit;
-            padding: 8px 16px;
+            font-weight: 600;
+            padding: 11px 20px;
             border: 1px solid var(--line);
-            background: #f4f4f2;
+            border-radius: 9px;
+            background: #fff;
             color: var(--ink);
             cursor: pointer;
             text-decoration: none;
         }
 
-        .btn:hover { background: #eaeae7; }
+        .btn:hover { background: #f4f5f6; }
 
         .btn-primary {
             background: var(--red);
-            border-color: #6f1320;
+            border-color: var(--red);
             color: #fff;
         }
 
-        .btn-primary:hover { background: #851826; }
+        .btn-primary:hover { background: var(--red-dark); border-color: var(--red-dark); }
 
         .btn-block { display: block; width: 100%; text-align: center; }
 
@@ -174,12 +203,51 @@
 
         .row-between { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 
-        footer {
-            max-width: 980px;
-            margin: 30px auto;
-            padding: 0 24px;
-            color: var(--muted);
+        /* Site footer */
+        .site-footer {
+            background: #14181f;
+            color: #b7bdc9;
+            margin-top: 56px;
+        }
+        .site-footer .foot-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 48px 28px 32px;
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+            gap: 32px;
+        }
+        .site-footer h4 {
+            color: #fff;
             font-size: 13px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin: 0 0 14px;
+        }
+        .site-footer a {
+            display: block;
+            color: #b7bdc9;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 9px;
+        }
+        .site-footer a:hover { color: #fff; }
+        .site-footer .foot-about { font-size: 14px; line-height: 1.7; margin: 0; max-width: 300px; }
+        .site-footer .foot-logo {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-weight: 700; color: #fff; font-size: 16px; margin-bottom: 14px;
+        }
+        .site-footer .foot-logo img { height: 34px; background: #fff; padding: 3px 6px; border-radius: 6px; }
+        .site-footer .foot-list { color: #b7bdc9; font-size: 14px; line-height: 1.9; }
+        .site-footer .foot-bottom {
+            border-top: 1px solid #262b34;
+            padding: 18px 28px;
+            text-align: center;
+            font-size: 13px;
+            color: #8b92a0;
+        }
+        @media (max-width: 760px) {
+            .site-footer .foot-inner { grid-template-columns: 1fr 1fr; gap: 26px; }
         }
     </style>
 </head>
@@ -187,14 +255,14 @@
 
 <header class="topbar">
     <div class="topbar-inner">
-        <a class="brand" href="{% url 'dashboard' %}"><span class="drop"></span> Blood Donation System</a>
+        <a class="brand" href="{% url 'dashboard' %}"><img src="{% static 'img/logo.jpg' %}" alt="Blood Donation System"></a>
         <nav>
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and request.resolver_match.url_name != 'index' %}
                 <a href="{% url 'dashboard' %}">Dashboard</a>
-                <a href="{% url 'logout' %}">Logout</a>
+                <a href="{% url 'logout' %}" class="nav-ghost">Logout</a>
             {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
+                <a href="{% url 'login' %}" class="nav-ghost">Sign in</a>
+                <a href="{% url 'register' %}" class="nav-cta">Get started</a>
             {% endif %}
         </nav>
     </div>
@@ -209,6 +277,43 @@
 
     {% block content %}{% endblock %}
 </main>
+
+<footer class="site-footer">
+    <div class="foot-inner">
+        <div>
+            <div class="foot-logo">
+                <img src="{% static 'img/logo.jpg' %}" alt="logo"> Blood Donation System
+            </div>
+            <p class="foot-about">
+                Connecting donors, hospitals and response teams so safe blood
+                reaches the patients who need it — quickly and reliably.
+            </p>
+        </div>
+        <div>
+            <h4>Platform</h4>
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'register' %}">Register</a>
+            <a href="{% url 'login' %}">Sign in</a>
+        </div>
+        <div>
+            <h4>Built for</h4>
+            <div class="foot-list">
+                Donors<br>Hospitals<br>Ambulance teams<br>Administrators
+            </div>
+        </div>
+        <div>
+            <h4>Contact</h4>
+            <div class="foot-list">
+                info@blooddonation.co.ke<br>
+                +254 700 000 000<br>
+                Mon&ndash;Fri, 9:00&ndash;18:00
+            </div>
+        </div>
+    </div>
+    <div class="foot-bottom">
+        &copy; {% now "Y" %} Blood Donation System. All rights reserved.
+    </div>
+</footer>
 
 </body>
 </html>
